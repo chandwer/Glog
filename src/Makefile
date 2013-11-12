@@ -1,6 +1,6 @@
 CC		= g++
-CFLAG 	= `pkg-config gtkmm-3.0 --cflags --libs`
+CFLAG 	= `pkg-config gtkmm-3.0 --cflags --libs` -lsqlite3
 
-glog: main.cc glog.cc
-	$(CC) main.cc glog.cc -o glog $(CFLAG)
+glog: main.cc glog.cc database.cc
+	$(CC) main.cc glog.cc database.cc -o glog $(CFLAG)
 	
