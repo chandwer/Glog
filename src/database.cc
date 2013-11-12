@@ -13,7 +13,7 @@ Database::~Database() {}
 bool Database::open(char *filename)
 	{ return (sqlite3_open(filename, &database)==SQLITE_OK)?true:false; }
 
-vector<vector<string> > Database::query(char *query)
+vector<vector<string> > Database::query(const char *query)
 {
 	sqlite3_stmt *statement;
 	vector<vector<string> > results;

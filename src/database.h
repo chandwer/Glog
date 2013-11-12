@@ -15,7 +15,7 @@ class Database
 		~Database();
 
 		bool open(char *filename);
-		vector<vector<string> > query(char *query);
+		vector<vector<string> > query(const char *query);
 		void close();
 
 		bool isNew;

@@ -1,5 +1,9 @@
 #include "glog.h"
 #include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
 
 GlogWindow::GlogWindow(BaseObjectType *object, const Glib::RefPtr<Gtk::Builder> &glade)
 :Gtk::Window(object), m_refGlade(glade), 
@@ -33,7 +37,19 @@ GlogWindow::~GlogWindow()
 
 void GlogWindow::enterButton_clicked()
 {
-	std::cout << "Call: " << callEntry->get_text() << std::endl;	
+	Glib::ustring query;
+
+	query="INSERT INTO contacts (call, mode, frequency, date, utc, rst_tx, rst_rx) VALUES (";
+	query+="'"+callEntry->get_text()+"',";
+	query+="'"+modeEntry->get_text()+"',";
+	query+="'"+freqEntry->get_text()+"',";
+	query+="'"+dateEntry->get_text()+"',";
+	query+="'"+utcEntry->get_text()+"',";
+	query+="'"+txrstEntry->get_text()+"',";
+	query+="'"+rxrstEntry->get_text()+"'";
+	query+=");";
+
+	db->query(query.c_str());
 }
 void GlogWindow::clearButton_clicked()
 {
@@ -41,13 +57,11 @@ void GlogWindow::clearButton_clicked()
 }
 void GlogWindow::newDatabase()
 {
-	db->query("CREATE TABLE stations(call_id INTEGER PRIMARY KEY AUTOINCREMENT, call TEXT);");
-	db->query("CREATE TABLE modes(mode_id INTEGER PRIMARY KEY AUTOINCREMENT, mode TEXT);");
 	db->query("CREATE TABLE contacts("
 				"contact_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				"call_id INTEGER,"
-				"mode_id INTEGER,"
-				"frequency REAL,"
+				"call TEXT,"
+				"mode TEXT,"
+				"frequency TEXT,"
 				"date TEXT,"
 				"utc TEXT,"
 				"rst_tx INTEGER,"
