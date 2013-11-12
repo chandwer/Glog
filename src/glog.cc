@@ -50,10 +50,17 @@ void GlogWindow::enterButton_clicked()
 	query+=");";
 
 	db->query(query.c_str());
+	this->clearButton_clicked();
 }
 void GlogWindow::clearButton_clicked()
 {
-	std::cout << "Clear fields" << std::endl;
+	dateEntry->set_text("");
+	utcEntry->set_text("");
+	callEntry->set_text("");
+	freqEntry->set_text("");
+	modeEntry->set_text("");
+	txrstEntry->set_text("");
+	rxrstEntry->set_text("");
 }
 void GlogWindow::newDatabase()
 {
