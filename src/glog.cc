@@ -1,3 +1,12 @@
+/*
+glog
+
+Chris Handwerker (2013) <chris.handwerker@gmail.com>
+http://homebrewtechnology.org
+
+Provides signal handlers for glog GTK interface
+*/
+
 #include "glog.h"
 #include <iostream>
 #include <string>
@@ -11,8 +20,8 @@ enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEnt
 {
 	// Load database
 	db=new Database("../glog.db");
-	if(db->isNew)
-		this->newDatabase();
+	// if(db->isNew)
+	// 	this->newDatabase();
 
 	// Get widgets
 	glade->get_widget("enterButton", enterButton);
