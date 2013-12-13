@@ -11,12 +11,19 @@ Methods for creating and interacting with the Sqlite3 database
 #define DB_H
 
 #include <sqlite3.h>
+#include <gtkmm.h> 
 
 class Database
 {
 	public:
-		Database();
+		Database(Glib::ustring *filename);
 		~Database();
+
+	private:
+		// TODO making a vector of type Glib::ustring doesn't work I guess... fix this
+		vector<vector<Glib::ustring> > Query(Glib::ustring *query);
+
+		sqlite3 *db;
 };
 
 #endif

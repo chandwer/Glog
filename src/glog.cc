@@ -19,7 +19,8 @@ GlogWindow::GlogWindow(BaseObjectType *object, const Glib::RefPtr<Gtk::Builder> 
 enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEntry(0), modeEntry(0), txrstEntry(0), rxrstEntry(0)
 {
 	// Load database
-	db=new Database("../glog.db");
+	Glib::ustring path="../glog.db";
+	db=new Database(&path);
 	// if(db->isNew)
 	// 	this->newDatabase();
 
@@ -36,14 +37,15 @@ enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEnt
 	glade->get_widget("rxrstEntry", rxrstEntry);
 
 	// Connect signals
-	enterButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::enterButton_clicked));
-	clearButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::clearButton_clicked));
+	//enterButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::enterButton_clicked));
+	//clearButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::clearButton_clicked));
 
 }
 GlogWindow::~GlogWindow() 
 {
 }
 
+/*
 void GlogWindow::enterButton_clicked()
 {
 	Glib::ustring query;
@@ -84,3 +86,4 @@ void GlogWindow::newDatabase()
 				"rst_rx INTEGER"
 			");");
 }
+*/
