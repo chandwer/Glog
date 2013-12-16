@@ -21,8 +21,6 @@ enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEnt
 	// Load database
 	Glib::ustring path="../glog.db";
 	db=new Database(&path);
-	// if(db->isNew)
-	// 	this->newDatabase();
 
 	// Get widgets
 	glade->get_widget("enterButton", enterButton);
@@ -39,7 +37,6 @@ enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEnt
 	// Connect signals
 	//enterButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::enterButton_clicked));
 	//clearButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::clearButton_clicked));
-
 }
 GlogWindow::~GlogWindow() 
 {
