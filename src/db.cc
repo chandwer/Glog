@@ -35,7 +35,7 @@ vector<vector<Glib::ustring> > Database::get_contacts(vector<Glib::ustring> tags
 		where+="tags.tag='"+tags[i]+"'";
 
 		if(i<tags.size()-1)
-			where+=" OR ";
+			where+=" AND ";
 	}
 
 	statement=
@@ -48,7 +48,7 @@ vector<vector<Glib::ustring> > Database::get_contacts(vector<Glib::ustring> tags
 			"INNER JOIN tags ON tag_contact.tag_id=tags.tag_id "
 		+where+" GROUP BY contacts.contact_id;";
 
-cout << "STATEMENT IS ---> " << statement << endl << endl;
+//cout << "STATEMENT IS ---> " << statement << endl << endl;
 
 	query();
 	return results;
