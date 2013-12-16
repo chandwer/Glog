@@ -15,6 +15,8 @@ Provides signal handlers for glog GTK interface
 #include <ctime>
 #include "db.h"
 
+using namespace std;
+
 class GlogWindow : public Gtk::Window
 {
 	public:
@@ -22,7 +24,13 @@ class GlogWindow : public Gtk::Window
 		virtual ~GlogWindow();
 	protected:
 		Database *db;
-		void newDatabase();
+
+		// TODO move tag parsing to a friend class
+		vector<Glib::ustring> tags;
+		void tag_parse();
+
+		// Text buffers
+		Glib::RefPtr<Gtk::TextBuffer> remarksBuffer, tagsBuffer;
 
 		// Signal handlers
 		void dateButton_clicked();

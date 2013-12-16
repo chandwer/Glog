@@ -9,8 +9,6 @@ Provides signal handlers for glog GTK interface
 
 #include "glog.h"
 
-using namespace std;
-
 GlogWindow::GlogWindow(BaseObjectType *object, const Glib::RefPtr<Gtk::Builder> &glade)
 :Gtk::Window(object), m_refGlade(glade), 
 dateButton(0), utcButton(0), enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEntry(0), modeEntry(0), txrstEntry(0), rxrstEntry(0), remarksTextView(0), tagsTextView(0)
@@ -36,6 +34,10 @@ dateButton(0), utcButton(0), enterButton(0), clearButton(0), dateEntry(0), utcEn
 	glade->get_widget("remarksTextView", remarksTextView);
 	glade->get_widget("tagsTextView", tagsTextView);
 
+	// Get buffers
+	remarksBuffer=remarksTextView->get_buffer();
+	tagsBuffer=tagsTextView->get_buffer();	
+
 	// Connect signals
 	dateButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::dateButton_clicked));
 	utcButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::utcButton_clicked));
@@ -44,6 +46,16 @@ dateButton(0), utcButton(0), enterButton(0), clearButton(0), dateEntry(0), utcEn
 }
 GlogWindow::~GlogWindow() 
 {
+}
+void GlogWindow::tag_parse()
+{
+	// TODO replace tag parser with something more flexible
+	tags.clear();
+	istringstream ss(tagsBuffer->get_text());
+	string token;
+
+	while(std::getline(ss, token, ' '))
+		tags.push_back(token);
 }
 void GlogWindow::dateButton_clicked()
 {
@@ -67,10 +79,7 @@ void GlogWindow::utcButton_clicked()
 }
 void GlogWindow::enterButton_clicked()
 {
-	Glib::RefPtr<Gtk::TextBuffer> remarksBuffer,tagsBuffer;
-	
-	remarksBuffer=remarksTextView->get_buffer();
-	tagsBuffer=tagsTextView->get_buffer();
+	tag_parse();
 
 	db->set_contact(
 			callEntry->get_text(),
@@ -81,11 +90,13 @@ void GlogWindow::enterButton_clicked()
 			rxrstEntry->get_text(),
 			txrstEntry->get_text(),
 			remarksBuffer->get_text(),
-			tagsBuffer->get_text()
+			tags
 		);
-	cout << "meow" << endl;
+	callEntry->set_text("");
+	txrstEntry->set_text("");
+	rxrstEntry->set_text("");
+	remarksBuffer->set_text("");
 }
-
 void GlogWindow::clearButton_clicked()
 {
 	dateEntry->set_text("");
@@ -95,4 +106,6 @@ void GlogWindow::clearButton_clicked()
 	modeEntry->set_text("");
 	txrstEntry->set_text("");
 	rxrstEntry->set_text("");
+	remarksBuffer->set_text("");
+	tagsBuffer->set_text("");
 }

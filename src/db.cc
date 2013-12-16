@@ -24,26 +24,33 @@ Database::~Database()
 {
 	sqlite3_close(db);
 }
-void Database::set_contact(Glib::ustring call, Glib::ustring mode, Glib::ustring date, Glib::ustring utc, Glib::ustring freq, Glib::ustring rxrst, Glib::ustring txrst, Glib::ustring remarks, Glib::ustring tags)
+void Database::set_contact(Glib::ustring call, Glib::ustring mode, Glib::ustring date, Glib::ustring utc, Glib::ustring freq, Glib::ustring rxrst, Glib::ustring txrst, Glib::ustring remarks, vector<Glib::ustring> tags)
 {
 	// Get station and mode ids
 	Glib::ustring call_id=get_id(&call,"call","stations");
 	Glib::ustring mode_id=get_id(&mode,"mode","modes");
 
 	// Create contact entry
-	statement="INSERT INTO contacts(call_id, mode_id, date, utc, frequency, rst_tx, rst_rx,remarks) VALUES ("
-					"'"+call_id+"', ";
-					"'"+mode_id+"', ";
-					"'"+date+"', ";
-					"'"+utc+"', ";
-					"'"+freq+"', ";
-					"'"+rsttx+"', ";
-					"'"+rstrx+"', ";
-					"'"+remarks+"'";
+	statement="INSERT INTO contacts(call_id, mode_id, date, utc, frequency, rst_rx, rst_tx, remarks) VALUES ("
+					"'"+call_id+"',"
+					"'"+mode_id+"',"
+					"'"+date+"',"
+					"'"+utc+"',"
+					"'"+freq+"',"
+					"'"+rxrst+"',"
+					"'"+txrst+"',"
+					"'"+remarks+"'"
 				");";
-	// Associate tags in tag_contact
+	query();
+	statement="SELECT last_insert_rowid();"; query();
+	Glib::ustring contact_id=results[0][0];
 
-	cout << station_id << "\t" << mode_id << endl;
+	// Associate tags in tag_contact
+	for(Glib::ustring tag : tags)
+	{
+		Glib::ustring tag_id=get_id(&tag,"tag","tags");
+		statement="INSERT INTO tag_contact(contact_id, tag_id) VALUES ('"+contact_id+"','"+tag_id+"');"; query();
+	}
 }
 Glib::ustring Database::get_id(Glib::ustring *value, Glib::ustring type, Glib::ustring table)
 {
@@ -123,7 +130,7 @@ void Database::init_db()
 
 	statement=
 	"CREATE TABLE tag_contact("
-			"contact_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"contact_id INTEGER,"
 			"tag_id INTEGER"
 		");";
 	query();
