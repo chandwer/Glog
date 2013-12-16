@@ -1,3 +1,12 @@
+/*
+glog
+
+Chris Handwerker (2013) <chris.handwerker@gmail.com>
+http://homebrewtechnology.org
+
+Provides signal handlers for glog GTK interface
+*/
+
 #include "glog.h"
 #include <iostream>
 #include <string>
@@ -10,9 +19,10 @@ GlogWindow::GlogWindow(BaseObjectType *object, const Glib::RefPtr<Gtk::Builder> 
 enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEntry(0), modeEntry(0), txrstEntry(0), rxrstEntry(0)
 {
 	// Load database
-	db=new Database("../glog.db");
-	if(db->isNew)
-		this->newDatabase();
+	Glib::ustring path="../glog.db";
+	db=new Database(&path);
+	// if(db->isNew)
+	// 	this->newDatabase();
 
 	// Get widgets
 	glade->get_widget("enterButton", enterButton);
@@ -27,14 +37,15 @@ enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEnt
 	glade->get_widget("rxrstEntry", rxrstEntry);
 
 	// Connect signals
-	enterButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::enterButton_clicked));
-	clearButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::clearButton_clicked));
+	//enterButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::enterButton_clicked));
+	//clearButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::clearButton_clicked));
 
 }
 GlogWindow::~GlogWindow() 
 {
 }
 
+/*
 void GlogWindow::enterButton_clicked()
 {
 	Glib::ustring query;
@@ -75,3 +86,4 @@ void GlogWindow::newDatabase()
 				"rst_rx INTEGER"
 			");");
 }
+*/

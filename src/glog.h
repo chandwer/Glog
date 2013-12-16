@@ -1,7 +1,16 @@
+/*
+glog
+
+Chris Handwerker (2013) <chris.handwerker@gmail.com>
+http://homebrewtechnology.org
+
+Provides signal handlers for glog GTK interface
+*/
+
 #ifndef GLOGWINDOW_H
 #define GLOGWINDOW_H
 #include <gtkmm.h>
-#include "database.h"
+#include "db.h"
 
 class GlogWindow : public Gtk::Window
 {
