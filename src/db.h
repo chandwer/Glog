@@ -23,6 +23,7 @@ class Database
 		Database(Glib::ustring *filename);
 		~Database();
 		void set_contact(Glib::ustring call, Glib::ustring mode, Glib::ustring date, Glib::ustring utc, Glib::ustring freq, Glib::ustring rxrst, Glib::ustring txrst, Glib::ustring remarks, vector<Glib::ustring> tags);
+		vector<vector<Glib::ustring> > get_contacts(vector<Glib::ustring> tags);
 
 		vector<vector<Glib::ustring> > results;
 

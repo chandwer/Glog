@@ -24,6 +24,36 @@ Database::~Database()
 {
 	sqlite3_close(db);
 }
+vector<vector<Glib::ustring> > Database::get_contacts(vector<Glib::ustring> tags)
+{
+	Glib::ustring where;
+
+	for(int i=0; i<tags.size(); i++)
+	{
+		if(i==0)
+			where+="WHERE ";
+		where+="tags.tag='"+tags[i]+"'";
+
+		if(i<tags.size()-1)
+			where+=" OR ";
+	}
+
+	statement=
+		"SELECT contacts.contact_id, contacts.date, contacts.utc, stations.call, contacts.frequency, modes.mode,"
+				"contacts.rst_tx, contacts.rst_rx, contacts.remarks, tags.tag "
+		"FROM contacts "
+			"INNER JOIN stations ON contacts.call_id=stations.call_id "
+			"INNER JOIN modes ON contacts.mode_id=modes.mode_id "
+			"INNER JOIN tag_contact ON contacts.contact_id=tag_contact.contact_id "
+			"INNER JOIN tags ON tag_contact.tag_id=tags.tag_id "
+		+where+" GROUP BY contacts.contact_id;";
+
+cout << "STATEMENT IS ---> " << statement << endl << endl;
+
+	query();
+	return results;
+
+}
 void Database::set_contact(Glib::ustring call, Glib::ustring mode, Glib::ustring date, Glib::ustring utc, Glib::ustring freq, Glib::ustring rxrst, Glib::ustring txrst, Glib::ustring remarks, vector<Glib::ustring> tags)
 {
 	// Get station and mode ids
