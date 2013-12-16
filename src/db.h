@@ -11,7 +11,11 @@ Methods for creating and interacting with the Sqlite3 database
 #define DB_H
 
 #include <sqlite3.h>
-#include <gtkmm.h> 
+#include <gtkmm.h>
+#include <vector>
+#include <iostream>
+
+using namespace std;
 
 class Database
 {
@@ -19,11 +23,15 @@ class Database
 		Database(Glib::ustring *filename);
 		~Database();
 
-	private:
-		// TODO making a vector of type Glib::ustring doesn't work I guess... fix this
-		vector<vector<Glib::ustring> > Query(Glib::ustring *query);
+		vector<vector<Glib::ustring> > *results;
 
+	private:
+		void query();
+		void init_db();
+
+		// internal variables
 		sqlite3 *db;
+		Glib::ustring *statement;
 };
 
 #endif
