@@ -64,12 +64,15 @@ class GlogWindow : public Gtk::Window
 		{
 			public:
 				ModelColumns()
-				{ add(m_col_date); add(m_col_time); add(m_col_call); add(m_col_frequency); }
+				{ add(m_col_date); add(m_col_time); add(m_col_call); add(m_col_frequency); add(m_col_mode); add(m_col_rst_tx); add(m_col_rst_rx); }
 
 				Gtk::TreeModelColumn<Glib::ustring> m_col_date;
 				Gtk::TreeModelColumn<Glib::ustring> m_col_time;
 				Gtk::TreeModelColumn<Glib::ustring> m_col_call;
 				Gtk::TreeModelColumn<Glib::ustring> m_col_frequency;
+				Gtk::TreeModelColumn<Glib::ustring> m_col_mode;
+				Gtk::TreeModelColumn<Glib::ustring> m_col_rst_tx;
+				Gtk::TreeModelColumn<Glib::ustring> m_col_rst_rx;
 		};
 		ModelColumns m_columns;
 

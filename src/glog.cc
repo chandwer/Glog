@@ -57,6 +57,9 @@ dateButton(0), utcButton(0), enterButton(0), clearButton(0), updateButton(0), da
 	logTreeView->append_column("Time", m_columns.m_col_time);
 	logTreeView->append_column("Call", m_columns.m_col_call);
 	logTreeView->append_column("Frequency", m_columns.m_col_frequency);
+	logTreeView->append_column("Mode", m_columns.m_col_mode);
+	logTreeView->append_column("RST TX", m_columns.m_col_rst_tx);
+	logTreeView->append_column("RST RX", m_columns.m_col_rst_rx);
 	updateButton_clicked();
 
 }
@@ -90,6 +93,9 @@ void GlogWindow::updateButton_clicked()
 		treerow[m_columns.m_col_time]=row[2].data();
 		treerow[m_columns.m_col_call]=row[3].data();
 		treerow[m_columns.m_col_frequency]=row[4].data();
+		treerow[m_columns.m_col_mode]=row[5].data();
+		treerow[m_columns.m_col_rst_tx]=row[6].data();
+		treerow[m_columns.m_col_rst_rx]=row[7].data();
 
 		/*
 		for(Glib::ustring col : row)
