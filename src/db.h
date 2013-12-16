@@ -22,16 +22,20 @@ class Database
 	public:
 		Database(Glib::ustring *filename);
 		~Database();
+		void set_contact(Glib::ustring call, Glib::ustring mode, Glib::ustring date, Glib::ustring utc, Glib::ustring freq, Glib::ustring rxrst, Glib::ustring txrst, Glib::ustring remarks, Glib::ustring tags);	
 
-		vector<vector<Glib::ustring> > *results;
+		vector<vector<Glib::ustring> > results;
 
 	private:
 		void query();
 		void init_db();
 
+		Glib::ustring get_id(Glib::ustring *value, Glib::ustring type, Glib::ustring table);
+
 		// internal variables
 		sqlite3 *db;
-		Glib::ustring *statement;
+		Glib::ustring statement;
+		Glib::ustring call_copy;
 };
 
 #endif

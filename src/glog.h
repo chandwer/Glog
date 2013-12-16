@@ -10,6 +10,9 @@ Provides signal handlers for glog GTK interface
 #ifndef GLOGWINDOW_H
 #define GLOGWINDOW_H
 #include <gtkmm.h>
+#include <iostream>
+#include <vector>
+#include <ctime>
 #include "db.h"
 
 class GlogWindow : public Gtk::Window
@@ -22,12 +25,16 @@ class GlogWindow : public Gtk::Window
 		void newDatabase();
 
 		// Signal handlers
+		void dateButton_clicked();
+		void utcButton_clicked();
 		void enterButton_clicked();
 		void clearButton_clicked();
 
 		// Member widgets
 		Glib::RefPtr<Gtk::Builder> m_refGlade;
 
+		Gtk::Button *dateButton;
+		Gtk::Button *utcButton;
 		Gtk::Button *enterButton;
 		Gtk::Button *clearButton;
 
@@ -38,5 +45,8 @@ class GlogWindow : public Gtk::Window
 		Gtk::Entry *modeEntry;
 		Gtk::Entry *txrstEntry;
 		Gtk::Entry *rxrstEntry;
+
+		Gtk::TextView *remarksTextView;
+		Gtk::TextView *tagsTextView;
 };
 #endif

@@ -8,21 +8,20 @@ Provides signal handlers for glog GTK interface
 */
 
 #include "glog.h"
-#include <iostream>
-#include <string>
-#include <vector>
 
 using namespace std;
 
 GlogWindow::GlogWindow(BaseObjectType *object, const Glib::RefPtr<Gtk::Builder> &glade)
 :Gtk::Window(object), m_refGlade(glade), 
-enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEntry(0), modeEntry(0), txrstEntry(0), rxrstEntry(0)
+dateButton(0), utcButton(0), enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEntry(0), modeEntry(0), txrstEntry(0), rxrstEntry(0), remarksTextView(0), tagsTextView(0)
 {
 	// Load database
 	Glib::ustring path="../glog.db";
 	db=new Database(&path);
 
 	// Get widgets
+	glade->get_widget("dateButton", dateButton);
+	glade->get_widget("utcButton", utcButton);
 	glade->get_widget("enterButton", enterButton);
 	glade->get_widget("clearButton", clearButton);
 
@@ -34,32 +33,59 @@ enterButton(0), clearButton(0), dateEntry(0), utcEntry(0), callEntry(0), freqEnt
 	glade->get_widget("txrstEntry", txrstEntry);
 	glade->get_widget("rxrstEntry", rxrstEntry);
 
+	glade->get_widget("remarksTextView", remarksTextView);
+	glade->get_widget("tagsTextView", tagsTextView);
+
 	// Connect signals
-	//enterButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::enterButton_clicked));
-	//clearButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::clearButton_clicked));
+	dateButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::dateButton_clicked));
+	utcButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::utcButton_clicked));
+	enterButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::enterButton_clicked));
+	clearButton->signal_clicked().connect(sigc::mem_fun(this, &GlogWindow::clearButton_clicked));
 }
 GlogWindow::~GlogWindow() 
 {
 }
+void GlogWindow::dateButton_clicked()
+{
+	// set dateEntry with current date in yyyy-mm-dd format
+	time_t now=time(0);
+	tm *ltm=gmtime(&now);
 
-/*
+	stringstream ss;
+	ss << 1900+ltm->tm_year << "-" << ltm->tm_mon << "-" << ltm->tm_mday;
+	dateEntry->set_text(ss.str());
+}
+void GlogWindow::utcButton_clicked()
+{
+	// set utcEntry with current time in hh:mm format
+	time_t now=time(0);
+	tm *ltm=gmtime(&now);
+
+	stringstream ss;
+	ss << ltm->tm_hour << ":" << ltm->tm_min;
+	utcEntry->set_text(ss.str());
+}
 void GlogWindow::enterButton_clicked()
 {
-	Glib::ustring query;
+	Glib::RefPtr<Gtk::TextBuffer> remarksBuffer,tagsBuffer;
+	
+	remarksBuffer=remarksTextView->get_buffer();
+	tagsBuffer=tagsTextView->get_buffer();
 
-	query="INSERT INTO contacts (call, mode, frequency, date, utc, rst_tx, rst_rx) VALUES (";
-	query+="'"+callEntry->get_text()+"',";
-	query+="'"+modeEntry->get_text()+"',";
-	query+="'"+freqEntry->get_text()+"',";
-	query+="'"+dateEntry->get_text()+"',";
-	query+="'"+utcEntry->get_text()+"',";
-	query+="'"+txrstEntry->get_text()+"',";
-	query+="'"+rxrstEntry->get_text()+"'";
-	query+=");";
-
-	db->query(query.c_str());
-	this->clearButton_clicked();
+	db->set_contact(
+			callEntry->get_text(),
+			modeEntry->get_text(),
+			dateEntry->get_text(),
+			utcEntry->get_text(),
+			freqEntry->get_text(),
+			rxrstEntry->get_text(),
+			txrstEntry->get_text(),
+			remarksBuffer->get_text(),
+			tagsBuffer->get_text()
+		);
+	cout << "meow" << endl;
 }
+
 void GlogWindow::clearButton_clicked()
 {
 	dateEntry->set_text("");
@@ -70,17 +96,3 @@ void GlogWindow::clearButton_clicked()
 	txrstEntry->set_text("");
 	rxrstEntry->set_text("");
 }
-void GlogWindow::newDatabase()
-{
-	db->query("CREATE TABLE contacts("
-				"contact_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				"call TEXT,"
-				"mode TEXT,"
-				"frequency TEXT,"
-				"date TEXT,"
-				"utc TEXT,"
-				"rst_tx INTEGER,"
-				"rst_rx INTEGER"
-			");");
-}
-*/
